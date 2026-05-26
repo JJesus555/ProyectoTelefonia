@@ -29,4 +29,82 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AppScreen(context: Context) {
 
+    var numero by remember { mutableStateOf("") }
+    var mensaje by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        //Icono de telefono
+        Icon(
+            imageVector = Icons.Default.Phone,
+            contentDescription = "Icono telefono",
+            modifier = Modifier
+                .size(120.dp)
+                .align(Alignment.CenterHorizontally),
+            tint = Color(0xFF19A7D2)
+        )
+        Spacer(modifier = Modifier.height(64.dp))
+
+        //Campos de texto donde se ingresa el numero
+        Text("Escribe el numero que quieras guardar:")
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = numero,
+            onValueChange = { numero = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Número") },
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFF9D9D83),
+                unfocusedContainerColor = Color(0xFFF0F5BF)
+            )
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+
+        //Campos de texto donde se ingresa el mensaje
+        Text("Escribe el mensaje que se mostrara automaticamente:")
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = mensaje,
+            onValueChange = { mensaje = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Mensaje") },
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFF9D9D83),
+                unfocusedContainerColor = Color(0xFFF0F5BF)
+            )
+        )
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        //Boton de guardar
+        Button(
+            onClick = {
+                val prefs = context.getSharedPreferences("datos", Context.MODE_PRIVATE)
+                prefs.edit()
+                    .putString("numero", numero)
+                    .putString("mensaje", mensaje)
+                    .apply()
+                Toast.makeText(context, "Teléfono guardado correctamente", Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFEC922C),
+                contentColor = Color.White
+            )
+        ) {
+            Text("Guardar")
+        }
+    }
 }
